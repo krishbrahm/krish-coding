@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My portfolio</title>
+    <link href="styles.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            Krish's portfolio
+        </div>
+        <button onclick="toggleDark()">Dark Mode</button>
+    </nav>
+    <section class="hero">
+        <div class="profile">
+            <img src="profileimg.png">
+
+            <h1>Krish Brahmandam</h1>
+            <div class="typing">
+                2nd grade student
+            </div>
+            <button>Download resume</button>
+            <button onclick="contact()">Contact Me</button>
+
+            <div class="like" onclick="like()">
+                <h3>Likes</h3>
+                ❤️
+                <span id="likes">0</span>
+            </div>
+        </div>
+    </section>
+    <section class="about">
+        <h2>About Me</h2>
+        <p></p>
+    </section>
+    <section>
+        <h2>My Skills</h2>
+        <div class="skill">
+            <h3>Drawing</h3>
+            <div class="bar">
+                <div class="progress" style="width: 40%"></div>
+            </div>
+        </div>
+        <div class="skill">
+            <h3>Coding</h3>
+            <div class="bar">
+                <div class="progress" style="width: 90%"></div>
+            </div>
+        </div>
+        <div class="skill">
+            <h3>Robotics</h3>
+            <div class="bar">
+                <div class="progress" style="width: 70%"></div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2>My Hobbies</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>Learning</h3>
+            </div>
+            <div class="card">
+                <h3>Gaming</h3>
+            </div>
+            <div class="card">
+                <h3>Swimming</h3>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2>My Artwork</h2>
+        <div class="gallery">
+            <img src="https://picsum.photos/400/300">
+            <img src="https://picsum.photos/401/300">
+            <img src="https://picsum.photos/402/300">
+        </div>
+    </section>
+    <section>
+        <h2>Achievements</h2>
+        <div class="badges">
+            <div class="badge">
+                Coding star
+            </div>
+            <div class="badge">
+                Piano master
+            </div>
+            <div class="badge">
+                Won first place in school show
+            </div>
+        </div>
+    </section>
+    <section class="contact">
+        <h2>Contact</h2>
+        <p>krish.brahmandam@gmail.com</p>
+    </section>
+    <footer>
+        <h3>Krish's portfolio</h3>
+        <br>
+        <p><span id="year">Krish's portfolio</span></p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

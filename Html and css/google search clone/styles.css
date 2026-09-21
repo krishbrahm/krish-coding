@@ -1,0 +1,13 @@
+body {
+    text-align: center;
+    margin-top: 120px;
+    font-family: Arial, sans-serif;
+}
+
+#searchBox {
+    width: 500px;
+    height: 40px;
+    border: 1px solid black;
+    padding-left: 15px;
+    font-size: 16px;
+}

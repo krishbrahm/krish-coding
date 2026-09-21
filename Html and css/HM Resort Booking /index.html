@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>HM Resort Booking system</title>
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+
+<body>
+    <form>
+        <div class="container">
+            <h1>HM Resort Booking System</h1>
+            <label>Guest Name</label>
+            <input required type="text" id="guest-name" placeholder="Enter Guest Name">
+            <label>Guest Count</label>
+            <input required type="number" id="guest-count" min="1" placeholder="Enter Number of Guests">
+            <div id="guest-display">
+                Guests Selected: 0
+            </div>
+            <label>Mobile Number</label>
+            <input required type="tel" id="mobile-number" placeholder="Enter Mobile Number">
+            <label>Email Address</label>
+            <input required type="email" id="email" placeholder="Enter Email Address">
+            <label>Booking Date</label>
+            <input required type="date" id="booking-date">
+            <label>Booking Time</label>
+            <input required type="time" id="booking-time">
+            <label>Dining Type</label>
+            <div class="radio-group">
+                <br>
+                <input type="radio" id="roof-top" name="dining" value="rooftop">
+                <label for="roof-top">Roof Top</label>
+                <input type="radio" id="room" name="dining" value="diningroom">
+                <label for="room">Dining Room</label>
+            </div>
+            <label>Meal Type</label>
+            <select id="meal-type">
+                <option value="">Select Meal</option>
+                <option>Breakfast</option>
+                <option>Lunch</option>
+                <option>Dinner</option>
+            </select>
+            <button onclick="bookTable()">Book Table</button>
+            <div id="result"></div>
+        </div>
+    </form>
+    <script src="script.js"></script>
+</body>
+
+</html>

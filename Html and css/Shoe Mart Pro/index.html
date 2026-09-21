@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shoe mart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            👟 Shoe Mart Pro
+        </div>
+        <nav>
+            <input type="text" placeholder="Search shoes..." id="search">
+            <button onclick="toggleDark()">🌙</button>
+            <button>❤️ <span id="wish-count">0</span></button>
+            <button>🛒 <span id="cart-count">0</span></button>
+        </nav>
+    </header>
+    <section class="hero">
+        <h1>BLACK FRIDAY SALE</h1>
+        <p>Up to 70% OFF</p>
+    </section>
+    <div class="container">
+        <br>
+        <div class="stats">
+            <div class="stat">
+                Products: <span id="product-total">0</span>
+            </div>
+            <div class="stat">
+                Wishlist: <span id="wishlist-total">0</span>
+            </div>
+            <div class="stat">
+                Cart: <span id="cart-total">0</span>
+            </div>
+        </div>
+        <div id="loader" class="loader">Loading products...</div>
+        <div id="products" class="products" style="display: flex;"></div>
+    </div>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()"></span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+    <section class="container">
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px">
+            <button onclick="sortProducts('low')">Price Low → High</button>
+            <button onclick="sortProducts('high')">Price High → Low</button>
+            <button onclick="showAll()">👟 All Products</button>
+            <button onclick="showWishlist()">❤️ Wishlist</button>
+            <button onclick="showCart()">🛒 Cart</button>
+            <button onclick="checkOut()">Check out</button>
+        </div>
+    </section>
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">✖️</span>
+            <h2>Your cart</h2>
+            <br>
+            <div id="cart-items">
+                <hr>
+                <br>
+                <h3 id="cart-price">Total: $0</h3>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="wishlist-modal">
+        <div class="modal-content">
+            <div id="modal-body"></div>
+            <span class="close" onclick="closeWishlist()">✖️</span>
+            <h2 id="wishlist-title" style="opacity: 0">My Wishlist ❤️</h2>
+            <div id="wishlist-items"></div>
+        </div>
+    </div>
+    <footer>
+        <h2>👟 Shoe Mart Pro</h2>
+        <p>Your online destination for stylish shoes</p>
+        <p>© 2026 Shoe Mart Pro</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

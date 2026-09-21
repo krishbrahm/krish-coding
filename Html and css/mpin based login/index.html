@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPIN Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="mpin-container">
+        <h2>Enter Your 4-Digit MPIN</h2>
+        <form id="mpin-form" novalidate>
+            <div class="mpin-inputs" id="input-row">
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+            </div>
+            <button type="submit" id="login-btn">Verify MPIN</button>
+        </form>
+        <p id="error-msg" class="error"></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

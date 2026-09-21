@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+#imagebox {
+    background-image: url("https://pbs.twimg.com/ext_tw_video_thumb/1645416146424721409/pu/img/gHiI9CndYAM634qa.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 60%;
+}
+
+#imagebox img {
+    width: 500px;
+    margin: 150px;
+}
+
+body {
+    margin: 0;
+    font-family: Helvetica, sans-serif;
+}
+
+#loginbox {
+    margin: 80px;
+    width: 40%
+}
+
+.inputstyle {
+    width: 400px;
+    height: 40px;
+    border-radius: 5px;
+    padding-left: 50px;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+#login {
+    width: 200px;
+    height: 30px;
+    background-color: blue;
+    border: transparent;
+    border-radius: 50px;
+    color: white
+}
+
+#login:hover {
+    transform: scale(1.01);
+    box-shadow: 0px 0px 5px rgb(182, 234, 182);
+    border: black;
+}
