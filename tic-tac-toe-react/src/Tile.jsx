@@ -1,15 +1,15 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { TurnContext } from './Board.jsx'
 import './App.css'
 
 function Tile(props) {
     const [content, setContent] = useState('')
     const [clicked, setClicked] = useState(false);
-
+    const { turn, gameOver } = useContext(TurnContext)
 
     function handleClick() {
-        if (clicked || props.gameOver) return;
-
-        setContent(props.content);
+        if (clicked || gameOver) return;
+        setContent(turn);
         setClicked(true);
         props.onClick();
     }

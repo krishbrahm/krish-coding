@@ -1,9 +1,9 @@
 import Tile from "./Tile";
 import './App.css'
-import { useState, useRef } from 'react'
-
+import { useState, createContext, useRef } from 'react'
+export const TurnContext = createContext();
 function Board() {
-    const [turn, setTurn] = useState('X')
+    const [turn, setTurn] = useState('X');
     const winning_combos = [
         [1, 4, 7],
         [2, 5, 8],
@@ -18,6 +18,7 @@ function Board() {
     const [o_list, setOList] = useState([])
     const [winner, setWinner] = useState(null)
     const [isDraw, setIsDraw] = useState(false)
+    const [gameOver, setGameOver] = useState(false)
     const success = useRef(new Audio('/successSound.mp3')).current;
     const beep = useRef(new Audio('/beepSound.mp3')).current;
     const [tilesTaken, setTilesTaken] = useState(0)
@@ -39,12 +40,17 @@ function Board() {
                 }
             })
         })
-        if (tilesTaken === 8) setIsDraw(true)
-
+        if (tilesTaken === 8) {
+            setIsDraw(true);
+            setGameOver(true)
+        }
     }
 
     function switchTurn(position) {
-        if (winner) return;
+        if (winner) {
+            setGameOver(true)
+            return
+        };
         let newTilesTaken = tilesTaken + 1;
         setTilesTaken(newTilesTaken);
         if (turn === 'X') {
@@ -64,24 +70,29 @@ function Board() {
 
 
     return (
-        <div>
+        <TurnContext
+            value={{
+                turn,
+                gameOver
+            }}
+        >
             {!winner ? <h2>Turn: {turn}</h2> : null}
             <br></br>
             <div className='board'>
                 <div className='board-row'>
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(1)} />
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(2)} />
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(3)} />
+                    <Tile onClick={() => switchTurn(1)} />
+                    <Tile onClick={() => switchTurn(2)} />
+                    <Tile onClick={() => switchTurn(3)} />
                 </div>
                 <div className='board-row'>
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(4)} />
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(5)} />
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(6)} />
+                    <Tile onClick={() => switchTurn(4)} />
+                    <Tile onClick={() => switchTurn(5)} />
+                    <Tile onClick={() => switchTurn(6)} />
                 </div>
                 <div className='board-row'>
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(7)} />
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(8)} />
-                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(9)} />
+                    <Tile onClick={() => switchTurn(7)} />
+                    <Tile onClick={() => switchTurn(8)} />
+                    <Tile onClick={() => switchTurn(9)} />
                 </div>
             </div>
             {(
@@ -91,7 +102,7 @@ function Board() {
             )
             }
             {winner || tilesTaken === 9 ? <button onClick={() => window.location.reload()} className='restart-btn'>Restart Game</button> : null}
-        </div>
+        </TurnContext>
     );
 }
 

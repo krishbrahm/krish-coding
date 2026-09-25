@@ -2,10 +2,10 @@ import Board from "./Board";
 
 function TicTacToe() {
     return (
-        <body>
+        <div>
             <h1>Tic Tac Toe</h1>
             <Board />
-        </body>
+        </div>
     );
 }
 
