@@ -1,6 +1,5 @@
 .board-row {
   display: flex;
-  gap: 5px;
 }
 
 .board {
@@ -9,7 +8,7 @@
 
 body {
   background-color: navy;
-  color: darkorange
+  color: darkorange;
 }
 
 .tile {
@@ -27,8 +26,8 @@ body {
 
 .restart-btn {
   border-radius: 10px;
-  width: 200px;
-  height: 30px;
+  width: 400px;
+  height: 50px
 }
 
 .restart-btn:hover {

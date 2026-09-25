@@ -17,11 +17,13 @@ function Board() {
     const [x_list, setXList] = useState([])
     const [o_list, setOList] = useState([])
     const [winner, setWinner] = useState(null)
+    const [isDraw, setIsDraw] = useState(false)
     const success = useRef(new Audio('/successSound.mp3')).current;
     const beep = useRef(new Audio('/beepSound.mp3')).current;
+    const [tilesTaken, setTilesTaken] = useState(0)
     function startAudioPlay(audio) {
         audio.currentTime = 0;
-        if (audio === beep) { audio.volume = 0.3 } else { audio.volume = 0.4 }
+        audio === beep ? audio.volume = 0.3 : audio.volume = 0.4
         audio.play().catch(err => console.error('Playback error: ', err));
     }
     function checkWin(curList) {
@@ -37,11 +39,14 @@ function Board() {
                 }
             })
         })
+        if (tilesTaken === 8) setIsDraw(true)
+
     }
 
     function switchTurn(position) {
         if (winner) return;
-
+        let newTilesTaken = tilesTaken + 1;
+        setTilesTaken(newTilesTaken);
         if (turn === 'X') {
             const nextX = [...x_list, position];
             setXList(nextX);
@@ -60,6 +65,8 @@ function Board() {
 
     return (
         <div>
+            {!winner ? <h2>Turn: {turn}</h2> : null}
+            <br></br>
             <div className='board'>
                 <div className='board-row'>
                     <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(1)} />
@@ -77,13 +84,13 @@ function Board() {
                     <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(9)} />
                 </div>
             </div>
-            {winner && (
+            {(
                 <div className="winMessage">
-                    {winner && <h1>{winner} Won!</h1>}
+                    {winner ? <h1>{winner} Won!</h1> : isDraw ? <h1>It is a draw!</h1> : <h1></h1>}
                 </div>
             )
             }
-            {winner && <button onClick={() => window.location.reload()} className='restart-btn'>Restart Game</button>}
+            {winner || tilesTaken === 9 ? <button onClick={() => window.location.reload()} className='restart-btn'>Restart Game</button> : null}
         </div>
     );
 }

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import TicTacToe from './TicTacToe'
 import './App.css'
 
