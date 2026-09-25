@@ -7,7 +7,7 @@ function Tile(props) {
 
 
     function handleClick() {
-        if (clicked) return;
+        if (clicked || props.gameOver) return;
 
         setContent(props.content);
         setClicked(true);
@@ -16,7 +16,7 @@ function Tile(props) {
 
     return (
         <div className='tile' onClick={handleClick}>
-            {content}
+            <h1 id="content">{content}</h1>
         </div>
     );
 }

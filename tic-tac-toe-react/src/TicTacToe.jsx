@@ -1,13 +1,11 @@
 import Board from "./Board";
-import './App.css'
 
 function TicTacToe() {
     return (
-        <div>
+        <body>
             <h1>Tic Tac Toe</h1>
             <Board />
-
-        </div>
+        </body>
     );
 }
 

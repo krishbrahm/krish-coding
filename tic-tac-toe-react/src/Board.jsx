@@ -18,9 +18,11 @@ function Board() {
     const [o_list, setOList] = useState([])
     const [winner, setWinner] = useState(null)
     const success = useRef(new Audio('/successSound.mp3')).current;
-    function successSound() {
-        success.currentTime = 0;
-        success.play().catch(err => console.error('Playback error: ', err));
+    const beep = useRef(new Audio('/beepSound.mp3')).current;
+    function startAudioPlay(audio) {
+        audio.currentTime = 0;
+        if (audio === beep) { audio.volume = 0.3 } else { audio.volume = 0.4 }
+        audio.play().catch(err => console.error('Playback error: ', err));
     }
     function checkWin(curList) {
         winning_combos.forEach(wcomb => {
@@ -31,13 +33,15 @@ function Board() {
                 }
                 if (i === 3) {
                     setWinner(turn)
-                    successSound()
+                    startAudioPlay(success)
                 }
             })
         })
     }
 
     function switchTurn(position) {
+        if (winner) return;
+
         if (turn === 'X') {
             const nextX = [...x_list, position];
             setXList(nextX);
@@ -49,30 +53,37 @@ function Board() {
         };
 
         setTurn(prev => prev === 'X' ? 'O' : 'X');
+        startAudioPlay(beep)
     }
+
+
 
     return (
         <div>
             <div className='board'>
                 <div className='board-row'>
-                    <Tile position='1' content={turn} onClick={() => switchTurn(1)} />
-                    <Tile position='2' content={turn} onClick={() => switchTurn(2)} />
-                    <Tile position='3' content={turn} onClick={() => switchTurn(3)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(1)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(2)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(3)} />
                 </div>
                 <div className='board-row'>
-                    <Tile position='4' content={turn} onClick={() => switchTurn(4)} />
-                    <Tile position='5' content={turn} onClick={() => switchTurn(5)} />
-                    <Tile position='6' content={turn} onClick={() => switchTurn(6)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(4)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(5)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(6)} />
                 </div>
                 <div className='board-row'>
-                    <Tile position='7' content={turn} onClick={() => switchTurn(7)} />
-                    <Tile position='8' content={turn} onClick={() => switchTurn(8)} />
-                    <Tile position='9' content={turn} onClick={() => switchTurn(9)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(7)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(8)} />
+                    <Tile content={turn} gameOver={winner ? true : false} onClick={() => switchTurn(9)} />
                 </div>
             </div>
-            <div>
-                {winner === 'X' ? <h1>X Won!</h1> : winner === 0 ? <h1>O Won!</h1> : <p></p>}
-            </div>
+            {winner && (
+                <div className="winMessage">
+                    {winner && <h1>{winner} Won!</h1>}
+                </div>
+            )
+            }
+            {winner && <button onClick={() => window.location.reload()} className='restart-btn'>Restart Game</button>}
         </div>
     );
 }
