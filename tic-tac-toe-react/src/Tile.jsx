@@ -1,14 +1,18 @@
-import { useState, useContext } from 'react'
-import { TurnContext } from './Board.jsx'
-import './App.css'
+import { useState, useContext, useRef } from "react";
+import { TurnContext } from "./TurnContext.jsx";
+import { startAudioPlay } from "./TicTacToe.jsx";
+
+import "./App.css";
 
 function Tile(props) {
-    const [content, setContent] = useState('')
+    const [content, setContent] = useState("");
     const [clicked, setClicked] = useState(false);
-    const { turn, gameOver } = useContext(TurnContext)
+    const { turn, gameOver } = useContext(TurnContext);
+    const beep = useRef(new Audio("/beepSound.mp3"));
 
     function handleClick() {
         if (clicked || gameOver) return;
+        startAudioPlay(beep, 0.3);
         setContent(turn);
         setClicked(true);
         props.onClick();
@@ -16,7 +20,7 @@ function Tile(props) {
 
     return (
         <div className='tile' onClick={handleClick}>
-            <h1 id="content">{content}</h1>
+            <h1 id='content'>{content}</h1>
         </div>
     );
 }
