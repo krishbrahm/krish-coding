@@ -1,7 +1,6 @@
 import { useState, useContext, useRef } from "react";
-import { TurnContext } from "./TurnContext.jsx";
+import TurnContext from "./TurnContext.jsx";
 import { startAudioPlay } from "./TicTacToe.jsx";
-
 import "./App.css";
 
 function Tile(props) {

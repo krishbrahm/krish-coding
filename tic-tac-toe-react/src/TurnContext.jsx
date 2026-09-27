@@ -1,2 +1,3 @@
 import { createContext } from "react";
-export const TurnContext = createContext();
+const TurnContext = createContext();
+export default TurnContext;

@@ -1,9 +1,10 @@
 // Imports
 
 import Tile from "./Tile";
+import Strike from "./Strike.jsx";
 import "./App.css";
 import { useContext } from "react";
-import { TurnContext } from "./TurnContext.jsx";
+import TurnContext from "./TurnContext.jsx";
 
 function Board() {
     const { turn, winner, isDraw } = useContext(TurnContext); // Variables
@@ -32,7 +33,9 @@ function Board() {
                     <Tile onClick={() => switchTurn(8)} />
                     <Tile onClick={() => switchTurn(9)} />
                 </div>
+                {winner ? <Strike /> : null}
             </div>
+
             <div className='winMessage'>
                 {/* Win message */}
 

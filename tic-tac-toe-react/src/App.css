@@ -1,35 +1,37 @@
 .board-row {
-  display: flex;
+    display: flex;
 }
 
 .board {
-  display: block;
+    display: block;
+    position: relative;
 }
 
 body {
-  background-color: navy;
-  color: darkorange;
+    background-color: navy;
+    color: darkorange;
+    position: relative;
 }
 
 .tile {
-  margin: 10px;
-  border: 1px solid rgb(202, 111, 0);
-  border-width: 5px;
-  height: 70px;
-  width: 70px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    margin: 10px;
+    border: 1px solid rgb(202, 111, 0);
+    border-width: 5px;
+    height: 70px;
+    width: 70px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .restart-btn {
-  border-radius: 10px;
-  width: 400px;
-  height: 50px
+    border-radius: 10px;
+    width: 400px;
+    height: 50px;
 }
 
 .restart-btn:hover {
-  background-color: lightgray
+    background-color: lightgray;
 }

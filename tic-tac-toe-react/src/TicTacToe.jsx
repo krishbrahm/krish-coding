@@ -1,6 +1,6 @@
 import Board from "./Board";
-import { useState, useRef, createContext } from "react";
-import { TurnContext } from "./TurnContext";
+import { useState, useRef } from "react";
+import TurnContext from "./TurnContext";
 
 export function startAudioPlay(audio, volume) {
     audio.current.currentTime = 0;
@@ -10,13 +10,15 @@ export function startAudioPlay(audio, volume) {
 
 function TicTacToe() {
     const [turn, setTurn] = useState("X");
-    const winning_combos = [
+    const wcombs = [
         [1, 4, 7],
         [2, 5, 8],
         [3, 6, 9],
+
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9],
+
         [1, 5, 9],
         [3, 5, 7],
     ];
@@ -25,18 +27,20 @@ function TicTacToe() {
     const [winner, setWinner] = useState(null);
     const [isDraw, setIsDraw] = useState(false);
     const [gameOver, setGameOver] = useState(false);
+
     const success = useRef(new Audio("/successSound.mp3"));
     const [tilesTaken, setTilesTaken] = useState(0);
-
+    const [wc, setWc] = useState(null);
     // Checking winners
     function checkWin(curList) {
-        winning_combos.forEach((wcomb) => {
+        wcombs.forEach((wcomb) => {
             let i = 0;
-            wcomb.forEach((sq) => {
-                if (curList.includes(sq)) {
+            wcomb.forEach((tl) => {
+                if (curList.includes(tl)) {
                     i++;
                 }
                 if (i === 3) {
+                    setWc(wcomb);
                     setWinner(turn);
                     startAudioPlay(success, 0.4);
                 }
@@ -80,6 +84,8 @@ function TicTacToe() {
                     switchTurn,
                     checkWin,
                     gameOver,
+                    wcombs,
+                    wc,
                 }}
             >
                 <Board />
