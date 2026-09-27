@@ -33,20 +33,21 @@ function TicTacToe() {
     const [wc, setWc] = useState(null);
     // Checking winners
     function checkWin(curList) {
-        wcombs.forEach((wcomb) => {
-            let i = 0;
-            wcomb.forEach((tl) => {
-                if (curList.includes(tl)) {
-                    i++;
-                }
-                if (i === 3) {
-                    setWc(wcomb);
-                    setWinner(turn);
-                    startAudioPlay(success, 0.4);
-                }
-            });
+        const foundWin = wcombs.some((wcomb) => {
+            const won = wcomb.every((tl) => curList.includes(tl));
+
+            if (won) {
+                setWinner(turn);
+                setGameOver(true);
+                setWc(wcomb);
+                startAudioPlay(success, 0.4);
+                return true;
+            }
+
+            return false;
         });
-        if (tilesTaken === 8) {
+
+        if (!foundWin && tilesTaken === 8) {
             setIsDraw(true);
             setGameOver(true);
         }

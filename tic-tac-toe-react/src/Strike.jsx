@@ -78,7 +78,7 @@ function Strike() {
                 left: `${left}px`,
                 transformOrigin: "left center",
                 transform: `rotate(${angle}deg)`,
-                background: "darkorange",
+                background: "green",
             }}
         />
     );
