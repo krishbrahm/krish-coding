@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Student Management Pro</title>
+        <link
+            rel="stylesheet"
+            href="{{url_for('static', filename='css/s667eeatyle.css')}}"
+        />
+    </head>
+
+    <body>
+        <div class="login-container">
+            <h1>Student Management Pro</h1>
+            <p>Login into your account</p>
+            <form method="POST">
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username..."
+                    required
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="password..."
+                    required
+                />
+                <button type="submit">Login</button>
+            </form>
+            <br /><br />
+            <a href="/register" class="button"
+                >Don't have an account? Create one.</a
+            >
+        </div>
+    </body>
+</html>

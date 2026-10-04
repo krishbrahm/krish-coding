@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard: Student Management Pro</title>
+        <link
+            href="{{url_for('static', filename='css/style.css')}}"
+            rel="stylesheet"
+        />
+    </head>
+
+    <body class="dashboard-page">
+        <aside class="sidebar">
+            <div class="logo">Student<span>Pro</span></div>
+            <nav>
+                <a href="/dashboard" class="active">Dashboard</a>
+                <a href="/students">Students</a>
+                <a href="/add-student">Add student</a>
+            </nav>
+            <a href="/logout" class="logout">Log out</a>
+        </aside>
+        <main class="main-content">
+            <header class="top-bar">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Welcome back, {{username}}!</p>
+                </div>
+                <div class="profile">{{username[0]|upper}}</div>
+            </header>
+            <section class="stats">
+                <div class="stat-card">
+                    <div class="stat-icon">👨‍🎓</div>
+                    <div>
+                        <p>Total students</p>
+                        <h2>0</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div>
+                        <p>Classes</p>
+                        <h2>0</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👤</div>
+                    <div>
+                        <p>Logged in as:</p>
+                        <h2>{{username}}</h2>
+                    </div>
+                </div>
+            </section>
+            <section class="dashboard-section">
+                <h2>Quick actions</h2>
+                <div class="action-grid">
+                    <a href="/add-student" class="action-card">
+                        <div class="action-icon">+</div>
+                        <h3>Add student</h3>
+                        <p>Add a new student to the database</p>
+                    </a>
+                    <a href="/students" class="action-card">
+                        <div class="action-icon">👥</div>
+                        <h3>View students</h3>
+                        <p>View & manage all students</p>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
