@@ -1,0 +1,10 @@
+body {
+    font: Arial;
+    text-align: center;
+}
+
+table,
+td,
+th {
+    padding: 10px
+}
