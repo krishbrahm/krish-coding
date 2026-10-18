@@ -64,7 +64,7 @@ export default function TestMode() {
         setSelectedAnswer("");
         setMessage("");
         setQuisIsOver(false);
-
+        
         const shuffled = [...questions].sort(() => Math.random() - 0.5);
         const freshTen = shuffled.slice(0, 10);
         setQuizQuestions(freshTen);
@@ -121,18 +121,19 @@ export default function TestMode() {
                 <h2>Vocabulary Quiz <br/> Score: {score}</h2>
             </header>
             <h3 className="question-word">{word}</h3>
-            <h4>Choose the correct meaning for the word <br/></h4>
+            <h4 className="question-prompt">Choose the correct meaning for the word <br/></h4>
 
-            <form onSubmit={!isAnswered ? handleSubmit : () => {}} className='quiz-card'>
+            <form onSubmit={handleSubmit} className='quiz-card'>
                 <div className='answers'>
                     {options.map((option: string, index: number) => (
-                        <div key={index}  className='answer' >
+                        <div key={index}  className='answer'>
                             <input
                                 type='radio'
                                 name='option'
                                 value={option}
                                 id={`m${index}`}
                                 checked={selectedAnswer === option}
+                                aria-checked={selectedAnswer === option}
                                 onChange={(e) => {
                                     const selAns = e.target.value
                                     setSelectedAnswer(selAns);
@@ -140,13 +141,14 @@ export default function TestMode() {
                                 }}
                             />
                             <label htmlFor={`m${index}`}>{option}</label>
+                            <br/><br/>
                         </div>
                     ))}
                 </div>
                 <br></br>
                 <p className='card-footer'>{message}</p>
                 <br/>
-                <button className='primary-button' type='submit'>Next</button>
+                <button className='primary-button' type='submit' disabled={isAnswered}>Next</button>
                 <footer className='card-footer'>
                     <p>Difficulty: {difficulty}</p>
                 </footer>
