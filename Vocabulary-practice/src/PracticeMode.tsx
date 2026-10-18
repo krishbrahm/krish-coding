@@ -11,7 +11,6 @@ export default function PracticeMode() {
     const [isAnswered, setIsAnswered] = useState(false)
     const [index, setIndex] = useState(0)
 
-
     useEffect(() => {
         async function getData() {
             const data: PracticeQuestion[] = await getDbData();
@@ -86,7 +85,6 @@ export default function PracticeMode() {
                     Current streak: {currentStreak} <br/> 
                     Highest streak: {highestStreak}
                 </h2>
-
             </header>
 
             <h3 className='question-word'>{word}</h3>
@@ -114,7 +112,7 @@ export default function PracticeMode() {
                     ))}
                 </div>
                 <p className='card-footer'>{message}</p>
-                <button type='submit' disabled={isAnswered} >Submit</button>
+                <button type='submit' disabled={isAnswered} className='primary-button'>Next</button>
 
                 <footer className='card-footer'>
                     <p>Example: {example}</p>
