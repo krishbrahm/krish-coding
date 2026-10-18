@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add-student - StudentPro</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body class="dashboard-page">
+    <aside class="sidebar">
+        <div class="logo">
+            Student<span>Pro</span>
+        </div>
+        <nav>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/students">Students</a>
+            <a href="/add-student" class="active">Add student</a>
+        </nav>
+        <a href="/logout" class="logout">Log out</a>
+    </aside>
+    <main class="main-content">
+        <header class="top-bar">
+            <div>
+                <h1>Add student</h1>
+                <p>Add a new student to the system</p>
+            </div>
+            <div class="profile">
+                {{session['username'][0]|upper}}
+            </div>
+        </header>
+        <div class="form-card">
+            <form method="POST">
+                <div class='form-grid'>
+                    <div class='form-group'>
+                        <label>Student name: </label>
+                        <input type="text" name="name" placeholder="Enter student name..." required>
+                    </div>
+                    <div class='form-group'>
+                        <label>Student age: </label>
+                        <input type="number" name="age" placeholder="Enter student age..." min="1" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Student class: </label>
+                        <input type="text" name="class_name" placeholder="Example: 'Class 10'" required>
+                    </div>
+                    <div class="form-group">
+                        <label>City: </label>
+                        <input type="text" name="city" placeholder="Enter city... " required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone number: </label>
+                        <input type="tel" name="phone" placeholder="Enter phone number..." required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="/students" class="cancel-button">Cancel</a>
+                    <button type="submit">Add student</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

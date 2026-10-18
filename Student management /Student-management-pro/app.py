@@ -46,5 +46,29 @@ def dashboard():
 def logout():
     session.pop('username', None)
     return redirect('/')
+
+@app.route('/add-student', methods=['GET', 'POST'])
+def add_student():
+    if 'username' not in session:
+        return redirect('/')
+    if request.method == 'POST':
+        name = request.form['name']
+        age = request.form['age']
+        class_name = request.form['class_name']
+        city = request.form['city']
+        phone = request.form['phone']
+        conn = sqlite3.connect('students.db')
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO students
+                (
+                    name, age, class_name, city, phone
+                )
+                    VALUES (?, ?, ?, ?, ?)
+        ''', (name, age, class_name, city, phone))
+        conn.commit()
+        conn.close()
+        return redirect('/students')
+    return render_template('add-student.html')
 if __name__ == '__main__':
     app.run(debug = True)
