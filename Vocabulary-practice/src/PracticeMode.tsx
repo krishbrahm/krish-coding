@@ -2,16 +2,19 @@ import getDbData from "./route.ts";
 import { useState, useEffect } from "react";
 
 function PracticeMode() {
-    const [questions, setQuestions] = useState<any[]>([]);
-    const [newQuestions, setNewQuestions] = useState<any[]>([]);
-    const [currentQuestion, setCurrentQuestion] = useState<any | null>(null);
+    const [questions, setQuestions] = useState<PracticeQuestion[]>([]);
+    const [currentQuestion, setCurrentQuestion] = useState<PracticeQuestion>();
     const [selectedAnswer, setSelectedAnswer] = useState<string>("");
     const [message, setMessage] = useState<string>("");
+    const [currentStreak, setCurrentStreak] = useState(0);
+    const [highestStreak, setHighestStreak] = useState(0)
+    const [isAnswered, setIsAnswered] = useState(false)
+
+
     useEffect(() => {
         async function getData() {
-            const data = await getDbData();
+            const data: PracticeQuestion[] = await getDbData();
             setQuestions(data);
-            setNewQuestions(data);
 
             if (data && data.length > 0) generateQuestion(data);
         }
@@ -29,9 +32,6 @@ function PracticeMode() {
 
         setCurrentQuestion(question);
 
-        setNewQuestions((prev) =>
-            prev.filter((_, index) => index !== randomIndex),
-        );
         return question;
     }
 
@@ -42,14 +42,22 @@ function PracticeMode() {
             return;
         }
 
+        setIsAnswered(true)
+
         if (selectedAnswer === correctanswer) {
             setMessage("Correct! 🎉");
+            const nextStreak = currentStreak + 1
+            setCurrentStreak(nextStreak)
+            if (nextStreak > highestStreak) {
+                setHighestStreak(nextStreak)
+            }
         } else {
             setMessage(`Wrong! The correct answer was: ${correctanswer}`);
+            setCurrentStreak(0)
         }
     }
 
-    if (!currentQuestion) return <h1>Loading questions</h1>;
+    if (!currentQuestion) return <h1 className='loader'>Loading questions</h1>;
 
     const {
         word,
@@ -66,38 +74,51 @@ function PracticeMode() {
 
     return (
         <div>
-            <h1>Practice mode</h1>
+ 
+            <header className='page-header'>
+                <h2>Vocabulary Quiz</h2>
+                <h2>Current streak: {currentStreak}</h2>
+                <h2>Highest streak: {highestStreak}</h2>
+            </header>
+
             <h3>{word}</h3>
             <h4>Choose the correct option for the word</h4>
-            <form onSubmit={handleSubmit}>
-                {options.map((option: any, index: number) => (
-                    <div key={index}>
-                        <input
-                            type='radio'
-                            name='option'
-                            id={`m${index}`}
-                            value={option}
-                            checked={selectedAnswer === option}
-                            onChange={(e) => setSelectedAnswer(e.target.value)}
-                        />
-                        <label htmlFor={`m${index}`}>{option}</label>
-                        <br />
-                        <br />
-                    </div>
-                ))}
+            <form onSubmit={!isAnswered ? handleSubmit : () => {}} className='quiz-card'>
+                <div className='answers'>
+                    {options.map((option: any, index: number) => (
+                        <div key={index} className="answer">
+                            <input
+                                type='radio'
+                                name='option'
+                                id={`m${index}`}
+                                value={option}
+                                checked={selectedAnswer === option}
+                                onChange={(e) => setSelectedAnswer(e.target.value)}
+                            />
+                            <label htmlFor={`m${index}`}>{option}</label>
+                            <br />
+                            <br />
+                        </div>
+                    ))}
+                </div>
+                <p className='card-footer'>{message}</p>
                 <button type='submit'>Submit</button>
                 <button
                     type='button'
                     onClick={() => generateQuestion(questions)}
+                    disabled={!isAnswered}
                 >
                     Next Question
                 </button>
+                <footer className='card-footer'>
+                    <p>Example: {example}</p>
+                    <p>Difficulty: {difficulty}</p>
+                </footer>
             </form>
             <br />
-            <p>{message}</p>
+            
             <br />
-            <p>Example: {example}</p>
-            <p>Difficulty: {difficulty}</p>
+
         </div>
     );
 }

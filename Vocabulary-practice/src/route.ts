@@ -6,7 +6,8 @@ async function getDbData() {
         .select("*");
 
     if (error) throw new Error("Error fetching backend data ", error);
-    return questions;
+
+    return questions
 }
 
-export default getDbData;
+export default getDbData; 

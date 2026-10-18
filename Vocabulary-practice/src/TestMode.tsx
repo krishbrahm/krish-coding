@@ -1,53 +1,107 @@
 import { useEffect, useState } from "react";
 import getDbData from "./route.ts";
+import './App.css'
 
-function TestMode() {
-    const [questions, setQuestions] = useState<any[]>([]);
+export default function TestMode() {
+    const [questions, setQuestions] = useState<Question[]>([]);
+    const [quizquestions, setQuizQuestions] = useState<Question[]>([])
     const [index, setIndex] = useState(0);
-    const [rightAnswers, setRightAnswers] = useState(0);
-    const [wrongAnswers, setWrongAnswers] = useState(0);
-    const [currentQuestion, setCurrentQuestion] = useState<any | null>(null);
+    const [isAnswered, setIsAnswered] = useState<boolean>(false)
+    const [score, setScore] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState<Question>();
     const [selectedAnswer, setSelectedAnswer] = useState<string>("");
     const [message, setMessage] = useState<string>("");
+    const [quizIsOver, setQuisIsOver] = useState(false)
+
     useEffect(() => {
         async function getData() {
-            const data = await getDbData();
+            const data: Question[] = await getDbData();
             setQuestions(data);
-
-            if (data && data.length > 0) generateQuestion(data);
         }
+
         getData();
     }, []);
 
-    function generateQuestion(availableQuestions: any[]) {
+    useEffect(() => {
+        if (questions.length === 0) return;
+
+        const shuffled = [...questions]
+            .sort(() => Math.random() - 0.5);
+
+        setQuizQuestions(shuffled.slice(0, 10));
+    }, [questions]);
+    
+    useEffect(() => {
+        if (quizquestions.length > 0) {
+            setIndex(0);
+            setCurrentQuestion(quizquestions[0]);
+            return
+        } 
+        if (quizIsOver) setMessage(`You got ${score}/10 correct!`)
+    }, [quizquestions]);
+
+    function generateQuestion(nextIndex: number) {
+        if (nextIndex >= quizquestions.length) {
+            setQuisIsOver(true);
+            return;
+        }
+        setIsAnswered(false);
         setMessage("");
+        setSelectedAnswer("");
 
-        if (!availableQuestions) return;
+        const question = quizquestions[nextIndex];
 
-        const question = availableQuestions[index];
+        if (!question) return;
 
-        setIndex((prev) => prev + 1);
-
+        setIndex(nextIndex);
         setCurrentQuestion(question);
+    }
+
+    function handleRestart() {
+        setIndex(0);
+        setIsAnswered(false);
+        setScore(0);
+        setSelectedAnswer("");
+        setMessage("");
+        setQuisIsOver(false);
+
+        const shuffled = [...questions].sort(() => Math.random() - 0.5);
+        const freshTen = shuffled.slice(0, 10);
+        setQuizQuestions(freshTen);
+        setCurrentQuestion(freshTen[0]); 
+    }
+
+
+    function checkAnswer(selectedAnswer: string, correctanswer: string) {
+        if (selectedAnswer === correctanswer) {
+            setMessage('Correct! 🎉')
+            setScore((prev) => prev + 1);
+        } else {
+            setMessage(`Wrong! The correct answer was '${correctanswer}'`)
+        } 
     }
 
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
+
         if (!selectedAnswer) {
             setMessage("Please select an option first!");
             return;
         }
+        setIsAnswered(true)
 
-        if (selectedAnswer === correctanswer) {
-            setMessage("Correct! 🎉");
-            setRightAnswers((prev) => prev + 1);
-        } else {
-            setMessage(`Wrong! The correct answer was: ${correctanswer}`);
-            setWrongAnswers((prev) => prev + 1);
-        }
+        checkAnswer(selectedAnswer, correctanswer)
+        
+        generateQuestion(index + 1)
     }
-
-    if (!currentQuestion) return <h1>Loading questions</h1>;
+    if (quizIsOver) return (
+        <div>
+            <h2>You have finished the quiz</h2>
+            <h3>You got {score} / {quizquestions.length} correct! 🎉</h3>
+            <button onClick={handleRestart}>Restart Quiz</button>
+        </div>
+    )
+    if (!currentQuestion) return <h1 className="loader">Loading questions</h1>;
 
     const {
         word,
@@ -56,51 +110,53 @@ function TestMode() {
         option3,
         option4,
         correctanswer,
-        difficulty,
+        difficulty
     } = currentQuestion;
 
     const options = [option1, option2, option3, option4];
 
     return (
         <div>
-            <h1>Test mode</h1>
+            <header className="page-header">
+                <h2>Vocabulary Quiz <br/> Score: {score}</h2>
+            </header>
+            <h3 className="question-word">{word}</h3>
+            <h4>Choose the correct meaning for the word <br/></h4>
 
-            <h3>
-                Right answers: {rightAnswers} <br />
-                Wrong answers: {wrongAnswers}
-            </h3>
-
-            <h3>{word}</h3>
-            <h4>Choose the correct meaning for the word</h4>
-            <form onSubmit={handleSubmit}>
-                {options.map((option: any, index: number) => (
-                    <div key={index}>
-                        <input
-                            type='radio'
-                            name='option'
-                            value={option}
-                            id={`m${index}`}
-                            checked={selectedAnswer === option}
-                            onChange={(e) => setSelectedAnswer(e.target.value)}
-                        />
-                        <label htmlFor={`m${index}`}>{option}</label>
-                        <br />
-                        <br />
-                    </div>
-                ))}
-                <button type='submit'>Submit</button>
-                <button
-                    type='button'
-                    onClick={() => generateQuestion(questions)}
-                >
-                    Next Question
-                </button>
+            <form onSubmit={!isAnswered ? handleSubmit : () => {}} className='quiz-card'>
+                <div className='answers'>
+                    {options.map((option: string, index: number) => (
+                        <div key={index}  className='answer' >
+                            <input
+                                type='radio'
+                                name='option'
+                                value={option}
+                                id={`m${index}`}
+                                checked={selectedAnswer === option}
+                                onChange={(e) => {
+                                    const selAns = e.target.value
+                                    setSelectedAnswer(selAns);
+                                    checkAnswer(selAns, correctanswer)
+                                }}
+                            />
+                            <label htmlFor={`m${index}`}>{option}</label>
+                        </div>
+                    ))}
+                </div>
+                <br></br>
+                <p className='card-footer'>{message}</p>
+                <br/>
+                <button className='primary-button' type='submit'>Next</button>
+                <footer className='card-footer'>
+                    <p>Difficulty: {difficulty}</p>
+                </footer>
             </form>
-            <p>{message}</p>
+            <br/><br/>
+            
             <br />
-            <p>Difficulty: {difficulty}</p>
+
+            
+
         </div>
     );
 }
-
-export default TestMode;
