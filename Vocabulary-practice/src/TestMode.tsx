@@ -13,6 +13,9 @@ export default function TestMode() {
     const [message, setMessage] = useState<string>("");
     const [quizIsOver, setQuisIsOver] = useState(false)
 
+    const [currentStreak, setCurrentStreak] = useState(0);
+    const [highestStreak, setHighestStreak] = useState(0)
+
     useEffect(() => {
         async function getData() {
             const data: Question[] = await getDbData();
@@ -98,7 +101,7 @@ export default function TestMode() {
         <div>
             <h2>You have finished the quiz</h2>
             <h3>You got {score} / {quizquestions.length} correct! 🎉</h3>
-            <button onClick={handleRestart}>Restart Quiz</button>
+            <button onClick={handleRestart} className='restart-btn'>Restart Quiz</button>
         </div>
     )
     if (!currentQuestion) return <h1 className="loader">Loading questions</h1>;
@@ -118,7 +121,7 @@ export default function TestMode() {
     return (
         <div>
             <header className="page-header">
-                <h2>Vocabulary Quiz <br/> Score: {score}</h2>
+               <h2 style={{flex: 1, color: "olive"}}> Score: {score}</h2>
             </header>
             <h3 className="question-word">{word}</h3>
             <h4 className="question-prompt">Choose the correct meaning for the word <br/></h4>
@@ -126,7 +129,7 @@ export default function TestMode() {
             <form onSubmit={handleSubmit} className='quiz-card'>
                 <div className='answers'>
                     {options.map((option: string, index: number) => (
-                        <div key={index}  className='answer'>
+                        <div key={index}  className='answer-card'>
                             <input
                                 type='radio'
                                 name='option'
@@ -140,24 +143,17 @@ export default function TestMode() {
                                     checkAnswer(selAns, correctanswer)
                                 }}
                             />
-                            <label htmlFor={`m${index}`}>{option}</label>
-                            <br/><br/>
+                            <label htmlFor={`m${index}`} style={{marginLeft: '10px'}}>{option}</label>
+                           
                         </div>
                     ))}
                 </div>
-                <br></br>
-                <p className='card-footer'>{message}</p>
-                <br/>
+                <p className='card-footer' style={{color: selectedAnswer === correctanswer ? 'green' : 'red'}}>{message}</p>
                 <button className='primary-button' type='submit' disabled={isAnswered}>Next</button>
                 <footer className='card-footer'>
                     <p>Difficulty: {difficulty}</p>
                 </footer>
             </form>
-            <br/><br/>
-            
-            <br />
-
-            
 
         </div>
     );

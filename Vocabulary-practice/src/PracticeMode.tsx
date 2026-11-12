@@ -10,7 +10,6 @@ export default function PracticeMode() {
     const [highestStreak, setHighestStreak] = useState(0)
     const [isAnswered, setIsAnswered] = useState(false)
     const [index, setIndex] = useState(0)
-
     useEffect(() => {
         async function getData() {
             const data: PracticeQuestion[] = await getDbData();
@@ -47,6 +46,7 @@ export default function PracticeMode() {
                 setCurrentStreak(0)
             }
         }
+
     }
 
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -59,6 +59,7 @@ export default function PracticeMode() {
         setIsAnswered(true)
         
         checkAnswer(selectedAnswer, correctanswer)
+        
         generateQuestion(index + 1)
     }
 
@@ -124,5 +125,5 @@ export default function PracticeMode() {
             <br />
 
         </div>
-    );
+    )
 };

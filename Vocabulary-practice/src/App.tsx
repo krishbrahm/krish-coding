@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import PracticeMode from "./PracticeMode";
-import TestMode from "./TestMode";
-import './App.css'
+import { SwitchContext } from './SwitchContext'
+import Main from './Main.tsx'
+import './App.css';
 
 function App() {
     const [mode, setMode] = useState<'test' | 'practice'>('test')     
@@ -14,23 +14,16 @@ function App() {
 
                 setMode('test')
 
-                await sleep(250);
                 setCanSwitch(true);
             } else if (e.key === 'ArrowLeft' && canSwitch) {
                 setCanSwitch(false);
                  
                 setMode('practice')
 
-                await sleep(250)
                 setCanSwitch(true)
             }
 
         };
-
-        const sleep = (ms: number) => {
-            return new Promise(r => setTimeout(r, ms));
-        }
-
         window.addEventListener("keydown", handleKeyDown);
 
         return () => {
@@ -40,11 +33,13 @@ function App() {
 
     return (
         <>
-            <br />
-            <br />
+
+        <header className="page-header">
+                <h2>Vocabulary Quiz</h2>
+            </header>
 
             <div className="mode-switch">
-
+                
                 <button onClick={() => setMode("practice")} aria-pressed={mode === 'practice'}>
                     Practice
                 </button>
@@ -53,8 +48,9 @@ function App() {
                     Test
                 </button>
             </div>
-            <br/><br/>
-            {mode === 'test' ? <TestMode /> : <PracticeMode />}
+            <SwitchContext.Provider value={{canSwitch, setCanSwitch, mode}}>
+            <Main />
+            </SwitchContext.Provider>
         </>
     );
 }
