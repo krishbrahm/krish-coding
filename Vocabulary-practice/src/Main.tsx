@@ -5,7 +5,7 @@ import './App.css'
 
 function Main() {
     
-    const { setCanSwitch, mode } = useContext(SwitchContext)
+    const { canSwitch, setCanSwitch, mode } = useContext(SwitchContext)
 
     const [questions, setQuestions] = useState<PracticeQuestion[]>([]);
     const [quizquestions, setQuizQuestions] = useState<PracticeQuestion[]>([])
@@ -16,14 +16,12 @@ function Main() {
     const [selectedAnswer, setSelectedAnswer] = useState<string>("");
     const [message, setMessage] = useState<string>("");
     const [quizIsOver, setQuisIsOver] = useState(false)
-    const [quizStarted, setQuizStarted] = useState(false)
-    const [quizlength, setQuizLength] = useState(5)
-    const [data, setData] = useState(5)
+    const [quizlength, setQuizLength] = useState(1)
 
     useEffect(() => {
         async function getData() {
             const data: PracticeQuestion[] = await getDbData();
-            setQuestions(data)
+            setQuestions(data);
         }
 
         getData();
@@ -36,7 +34,7 @@ function Main() {
             .sort(() => Math.random() - 0.5);
 
         setQuizQuestions(shuffled.slice(0, quizlength));
-    }, [questions, quizlength]);
+    }, [questions]);
     
     useEffect(() => {
         if (quizquestions.length > 0) {
@@ -44,19 +42,17 @@ function Main() {
             setCurrentQuestion(quizquestions[0]);
             return
         } 
-        if (quizIsOver) setMessage(`You got ${score / 2}/${quizlength} correct!`)
+        if (quizIsOver) setMessage(`You got ${score}/${quizlength} correct!`)
     }, [quizquestions]);
 
     function generateQuestion(nextIndex: number) {
-        if (nextIndex >= quizlength) {
+        if (nextIndex >= quizquestions.length) {
             setQuisIsOver(true);
-            setQuizStarted(false)
             return;
         }
         setIsAnswered(false);
         setMessage("");
         setSelectedAnswer("");
-        setQuizStarted(true)
 
         const question = quizquestions[nextIndex];
 
@@ -73,9 +69,10 @@ function Main() {
         setSelectedAnswer("");
         setMessage("");
         setQuisIsOver(false);
+        setQuizLength(1)
         
         const shuffled = [...questions].sort(() => Math.random() - 0.5);
-        const freshTen = shuffled.slice(0, quizlength);
+        const freshTen = shuffled.slice(0, 10);
         setQuizQuestions(freshTen);
         setCurrentQuestion(freshTen[0]); 
     }
@@ -107,7 +104,7 @@ function Main() {
         return (
             <div>
                 <h2>You have finished the quiz</h2>
-                <h3>You got {score / 2} / {quizquestions.length} correct! 🎉</h3>
+                <h3>You got {score} / {quizquestions.length} correct! 🎉</h3>
                 <button onClick={handleRestart} className='restart-btn'>Restart Quiz</button>
             </div>
         )
@@ -128,7 +125,6 @@ function Main() {
     } = currentQuestion;
 
     const options = [option1, option2, option3, option4];
-    
     return (
         <div>
             <header className="page-header">
@@ -137,14 +133,8 @@ function Main() {
 
             
                 <label>Enter quiz length... </label>
-                <input 
-                    type="number" 
-                    defaultValue={quizlength} 
-                    min={1} 
-                    onChange={(e) => setData(e.target.valueAsNumber)} 
-                    disabled={quizStarted}
-                />
-                <button onClick={() => setQuizLength(data)}>Set</button>
+                <input type="number" defaultValue={quizlength} min={1}/>
+                <button>Set</button>
             
 
             <h3 className="question-word">{word}</h3>
