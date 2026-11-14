@@ -5,7 +5,7 @@ import './App.css'
 
 function Main() {
     
-    const { canSwitch, setCanSwitch, mode } = useContext(SwitchContext)
+    const { setCanSwitch, mode } = useContext(SwitchContext)
 
     const [questions, setQuestions] = useState<PracticeQuestion[]>([]);
     const [quizquestions, setQuizQuestions] = useState<PracticeQuestion[]>([])
@@ -21,7 +21,7 @@ function Main() {
     useEffect(() => {
         async function getData() {
             const data: PracticeQuestion[] = await getDbData();
-            setQuestions(data);
+            setQuestions(data)
         }
 
         getData();
@@ -125,6 +125,7 @@ function Main() {
     } = currentQuestion;
 
     const options = [option1, option2, option3, option4];
+    let data = 1;
     return (
         <div>
             <header className="page-header">
@@ -133,8 +134,8 @@ function Main() {
 
             
                 <label>Enter quiz length... </label>
-                <input type="number" defaultValue={quizlength} min={1}/>
-                <button>Set</button>
+                <input type="number" defaultValue={quizlength} min={1} onBlur={(e) => data = e.target.valueAsNumber}/>
+                <button onClick={() => setQuizLength(data)}>Set</button>
             
 
             <h3 className="question-word">{word}</h3>

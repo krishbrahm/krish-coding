@@ -48,7 +48,7 @@ function App() {
                     Test
                 </button>
             </div>
-            <SwitchContext.Provider value={{canSwitch, setCanSwitch, mode}}>
+            <SwitchContext.Provider value={{setCanSwitch, mode}}>
             <Main />
             </SwitchContext.Provider>
         </>
