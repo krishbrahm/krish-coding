@@ -1,4 +1,4 @@
-interface Question {
+export interface Question {
     word: string,
     option1: string,
     option2: string,
@@ -6,9 +6,6 @@ interface Question {
     option4: string,
     correctanswer: string,
     difficulty: string,
-    id: number
-}
-
-interface PracticeQuestion extends Question  {
+    id: number;
     example: string
 }

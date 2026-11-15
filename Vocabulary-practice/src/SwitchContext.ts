@@ -1,3 +1,3 @@
 import { createContext } from 'react';
 
-export const SwitchContext = createContext<any>('')
+export const SwitchContext = createContext<any>(null)

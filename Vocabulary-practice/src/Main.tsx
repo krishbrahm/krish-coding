@@ -1,17 +1,18 @@
 import { useEffect, useState, useContext } from "react";
 import { SwitchContext } from "./SwitchContext.ts";
+import { Question } from './index.ts'
 import getDbData from "./route.ts";
 import "./App.css";
 
-function Main() {
-    const { setCanSwitch, mode } = useContext(SwitchContext);
+export default function Main() {
 
-    const [questions, setQuestions] = useState<PracticeQuestion[]>([]);
-    const [quizquestions, setQuizQuestions] = useState<PracticeQuestion[]>([]);
+    const { setCanSwitch, mode } = useContext(SwitchContext);
+    const [questions, setQuestions] = useState<Question[]>([]);
+    const [quizquestions, setQuizQuestions] = useState<Question[]>([]);
     const [index, setIndex] = useState(0);
     const [isAnswered, setIsAnswered] = useState<boolean>(false);
     const [score, setScore] = useState(0);
-    const [currentQuestion, setCurrentQuestion] = useState<PracticeQuestion>();
+    const [currentQuestion, setCurrentQuestion] = useState<Question>();
     const [selectedAnswer, setSelectedAnswer] = useState<string>("");
     const [message, setMessage] = useState<string>("");
     const [quizIsOver, setQuisIsOver] = useState(false);
@@ -21,7 +22,7 @@ function Main() {
 
     useEffect(() => {
         async function getData() {
-            const data: PracticeQuestion[] = await getDbData();
+            const data: Question[] = await getDbData();
             setQuestions(data);
         }
 
@@ -96,9 +97,7 @@ function Main() {
             return;
         }
         setIsAnswered(true);
-
         checkAnswer(selectedAnswer, correctanswer);
-
         generateQuestion(index + 1);
     }
     if (mode === "test" && quizIsOver) {
@@ -206,4 +205,4 @@ function Main() {
         </div>
     );
 }
-export default Main;
+
