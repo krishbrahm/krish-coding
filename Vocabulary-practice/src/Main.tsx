@@ -1,22 +1,23 @@
 import { useEffect, useState, useContext } from "react";
-import { SwitchContext } from './SwitchContext.ts'
+import { SwitchContext } from "./SwitchContext.ts";
 import getDbData from "./route.ts";
-import './App.css'
+import "./App.css";
 
 function Main() {
-    
-    const { canSwitch, setCanSwitch, mode } = useContext(SwitchContext)
+    const { setCanSwitch, mode } = useContext(SwitchContext);
 
     const [questions, setQuestions] = useState<PracticeQuestion[]>([]);
-    const [quizquestions, setQuizQuestions] = useState<PracticeQuestion[]>([])
+    const [quizquestions, setQuizQuestions] = useState<PracticeQuestion[]>([]);
     const [index, setIndex] = useState(0);
-    const [isAnswered, setIsAnswered] = useState<boolean>(false)
+    const [isAnswered, setIsAnswered] = useState<boolean>(false);
     const [score, setScore] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState<PracticeQuestion>();
     const [selectedAnswer, setSelectedAnswer] = useState<string>("");
     const [message, setMessage] = useState<string>("");
-    const [quizIsOver, setQuisIsOver] = useState(false)
-    const [quizlength, setQuizLength] = useState(1)
+    const [quizIsOver, setQuisIsOver] = useState(false);
+    const [quizStarted, setQuizStarted] = useState(false);
+    const [quizlength, setQuizLength] = useState(5);
+    const [data, setData] = useState(5);
 
     useEffect(() => {
         async function getData() {
@@ -30,29 +31,31 @@ function Main() {
     useEffect(() => {
         if (questions.length === 0) return;
 
-        const shuffled = [...questions]
-            .sort(() => Math.random() - 0.5);
+        const shuffled = [...questions].sort(() => Math.random() - 0.5);
 
         setQuizQuestions(shuffled.slice(0, quizlength));
-    }, [questions]);
-    
+    }, [questions, quizlength]);
+
     useEffect(() => {
         if (quizquestions.length > 0) {
             setIndex(0);
             setCurrentQuestion(quizquestions[0]);
-            return
-        } 
-        if (quizIsOver) setMessage(`You got ${score}/${quizlength} correct!`)
+            return;
+        }
+        if (quizIsOver)
+            setMessage(`You got ${score / 2}/${quizlength} correct!`);
     }, [quizquestions]);
 
     function generateQuestion(nextIndex: number) {
-        if (nextIndex >= quizquestions.length) {
+        if (nextIndex >= quizlength) {
             setQuisIsOver(true);
+            setQuizStarted(false);
             return;
         }
         setIsAnswered(false);
         setMessage("");
         setSelectedAnswer("");
+        setQuizStarted(true);
 
         const question = quizquestions[nextIndex];
 
@@ -69,22 +72,20 @@ function Main() {
         setSelectedAnswer("");
         setMessage("");
         setQuisIsOver(false);
-        setQuizLength(1)
-        
-        const shuffled = [...questions].sort(() => Math.random() - 0.5);
-        const freshTen = shuffled.slice(0, 10);
-        setQuizQuestions(freshTen);
-        setCurrentQuestion(freshTen[0]); 
-    }
 
+        const shuffled = [...questions].sort(() => Math.random() - 0.5);
+        const freshTen = shuffled.slice(0, quizlength);
+        setQuizQuestions(freshTen);
+        setCurrentQuestion(freshTen[0]);
+    }
 
     function checkAnswer(selectedAnswer: string, correctanswer: string) {
         if (selectedAnswer === correctanswer) {
-            setMessage('Correct! 🎉')
+            setMessage("Correct! 🎉");
             setScore((prev) => prev + 1);
         } else {
-            setMessage(`Wrong! The correct answer was '${correctanswer}'`)
-        } 
+            setMessage(`Wrong! The correct answer was '${correctanswer}'`);
+        }
     }
 
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -94,24 +95,28 @@ function Main() {
             setMessage("Please select an option first!");
             return;
         }
-        setIsAnswered(true)
+        setIsAnswered(true);
 
-        checkAnswer(selectedAnswer, correctanswer)
-        
-        generateQuestion(index + 1)
+        checkAnswer(selectedAnswer, correctanswer);
+
+        generateQuestion(index + 1);
     }
-    if (mode === 'test' && quizIsOver) {
+    if (mode === "test" && quizIsOver) {
         return (
             <div>
                 <h2>You have finished the quiz</h2>
-                <h3>You got {score} / {quizquestions.length} correct! 🎉</h3>
-                <button onClick={handleRestart} className='restart-btn'>Restart Quiz</button>
+                <h3>
+                    You got {score / 2} / {quizquestions.length} correct! 🎉
+                </h3>
+                <button onClick={handleRestart} className='restart-btn'>
+                    Restart Quiz
+                </button>
             </div>
-        )
+        );
     } else {
-        setCanSwitch(false)
+        setCanSwitch(false);
     }
-    if (!currentQuestion) return <h1 className="loader">Loading questions</h1>;
+    if (!currentQuestion) return <h1 className='loader'>Loading questions</h1>;
 
     const {
         word,
@@ -125,26 +130,33 @@ function Main() {
     } = currentQuestion;
 
     const options = [option1, option2, option3, option4];
+
     return (
         <div>
-            <header className="page-header">
-               <h2 style={{flex: 1, color: "olive"}}> Score: {score}</h2>
+            <header className='page-header'>
+                <h2 style={{ flex: 1, color: "olive" }}> Score: {score}</h2>
             </header>
 
-            
-                <label>Enter quiz length... </label>
-                <input type="number" defaultValue={quizlength} min={1}/>
-                <button>Set</button>
-            
+            <label>Enter quiz length... </label>
+            <input
+                type='number'
+                defaultValue={quizlength}
+                min={1}
+                onChange={(e) => setData(e.target.valueAsNumber)}
+                disabled={quizStarted}
+            />
+            <button onClick={() => setQuizLength(data)}>Set</button>
 
-            <h3 className="question-word">{word}</h3>
-            
-            <h4 className="question-prompt">Choose the correct meaning for the word <br/></h4>
+            <h3 className='question-word'>{word}</h3>
+
+            <h4 className='question-prompt'>
+                Choose the correct meaning for the word <br />
+            </h4>
 
             <form onSubmit={handleSubmit} className='quiz-card'>
                 <div className='answers'>
                     {options.map((option: string, index: number) => (
-                        <div key={index}  className='answer-card'>
+                        <div key={index} className='answer-card'>
                             <input
                                 type='radio'
                                 name='option'
@@ -153,28 +165,44 @@ function Main() {
                                 checked={selectedAnswer === option}
                                 aria-checked={selectedAnswer === option}
                                 onChange={(e) => {
-                                    const selAns = e.target.value
+                                    const selAns = e.target.value;
                                     setSelectedAnswer(selAns);
-                                    checkAnswer(selAns, correctanswer)
+                                    checkAnswer(selAns, correctanswer);
                                 }}
-                                
                             />
-                            <label htmlFor={`m${index}`} style={{marginLeft: '10px'}}>{option}</label>
-                           
+                            <label
+                                htmlFor={`m${index}`}
+                                style={{ marginLeft: "10px" }}
+                            >
+                                {option}
+                            </label>
                         </div>
                     ))}
                 </div>
-                
-                <p className='card-footer' style={{color: selectedAnswer === correctanswer ? 'green' : 'red'}}>{message}</p>
-                
-                <button className='primary-button' type='submit' disabled={isAnswered}>Next</button>
-                
+
+                <p
+                    className='card-footer'
+                    style={{
+                        color:
+                            selectedAnswer === correctanswer ? "green" : "red",
+                    }}
+                >
+                    {message}
+                </p>
+
+                <button
+                    className='primary-button'
+                    type='submit'
+                    disabled={isAnswered}
+                >
+                    Next
+                </button>
+
                 <footer className='card-footer'>
                     <p>Difficulty: {difficulty}</p>
-                    {mode === 'practice' && <p>Example: {example}</p>}
+                    {mode === "practice" && <p>Example: {example}</p>}
                 </footer>
             </form>
-
         </div>
     );
 }
