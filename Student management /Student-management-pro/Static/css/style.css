@@ -216,7 +216,7 @@ body:not(.dashboard-page) {
 
 .action-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .action-icon {
@@ -243,7 +243,7 @@ body:not(.dashboard-page) {
 
 @media (max-width: 900px) {
     .sidebar {
-        width: 200px
+        width: 200px;
     }
 
     .stats {
@@ -253,7 +253,6 @@ body:not(.dashboard-page) {
     .action-grid {
         grid-template-columns: 1fr;
     }
-
 }
 
 @media (max-width: 600px) {
@@ -276,10 +275,9 @@ body:not(.dashboard-page) {
     }
 
     .main-content {
-        padding: 25px
+        padding: 25px;
     }
 }
-
 
 .stat-card h2 {
     color: #222;
@@ -361,9 +359,9 @@ a {
     padding: 13px 15px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    font-size: 15px; 
+    font-size: 15px;
     outline: none;
-    transition: 0.2s
+    transition: 0.2s;
 }
 
 .form-group input:focus {
