@@ -37,13 +37,14 @@ def register():
         conn.close()
         return 'Account created successfully!'
     return render_template('register.html')
+
 @app.route("/dashboard")
 def dashboard():
     if "username" not in session:
         return redirect("/")
     username = session["username"]
-    connection = sqlite3.connect("students.db")
-    cursor = connection.cursor()
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM students")
     total_students = cursor.fetchone()[0]
     cursor.execute("""
@@ -57,7 +58,7 @@ def dashboard():
         LIMIT 5
     """)
     recent_students = cursor.fetchall()
-    connection.close()
+    conn.close()
     return render_template(
         "dashboard.html",
         username=username,
@@ -65,10 +66,12 @@ def dashboard():
         total_classes=total_classes,
         recent_students=recent_students
     )
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect('/')
+
 @app.route('/add-student', methods=['GET', 'POST'])
 def add_student():
     if 'username' not in session:
@@ -92,6 +95,7 @@ def add_student():
         conn.close()
         return redirect('/students')
     return render_template('add-student.html')
+
 @app.route("/students")
 def students():
     if "username" not in session:
@@ -115,5 +119,74 @@ def students():
         students=students,
         search=search
     )
+@app.route("/edit-student/<int:id>", methods=["GET", "POST"])
+def edit_student(id):
+
+    if "username" not in session:
+        return redirect("/")
+
+    connection = sqlite3.connect("students.db")
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT * FROM students
+        WHERE id = ?
+    """, (id,))
+
+    student = cursor.fetchone()
+    if student is None:
+        connection.close()
+        return "Student not found!"
+    if request.method == "POST":
+        name = request.form["name"]
+        age = request.form["age"]
+        class_name = request.form["class_name"]
+        city = request.form["city"]
+        phone = request.form["phone"]
+        cursor.execute("""
+            UPDATE students
+
+            SET
+                name = ?,
+                age = ?,
+                class_name = ?,
+                city = ?,
+                phone = ?
+
+            WHERE id = ?
+        """, (
+            name,
+            age,
+            class_name,
+            city,
+            phone,
+            id
+        ))
+
+        connection.commit()
+        connection.close()
+
+        return redirect("/students")
+
+    connection.close()
+
+    return render_template(
+        "edit-student.html",
+        student=student
+    )
+
+@app.route("/delete-student/<int:id>", methods=["POST"])
+def delete_student(id):
+    if "username" not in session:
+        return redirect("/")
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        DELETE FROM students
+        WHERE id = ?
+    """, (id,))
+    conn.commit()
+    conn.close()
+    return redirect("/students")
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Edit Student - StudentPro</title>
+
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/style.css') }}"
+        />
+    </head>
+
+    <body class="dashboard-page">
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+            <div class="logo">Student<span>Pro</span></div>
+
+            <nav>
+                <a href="/dashboard"> Dashboard </a>
+
+                <a href="/students" class="active"> Students </a>
+
+                <a href="/add-student"> Add Student </a>
+            </nav>
+
+            <a href="/logout" class="logout"> Logout </a>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <h1>Edit Student</h1>
+
+                    <p>Update student information.</p>
+                </div>
+                <div class="profile">{{ session["username"][0]|upper }}</div>
+            </header>
+            <div class="form-card">
+                <form method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label> Student Name </label>
+                            <input
+                                type="text"
+                                name="name"
+                                value="{{ student[1] }}"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label> Age </label>
+                            <input
+                                type="number"
+                                name="age"
+                                value="{{ student[2] }}"
+                                min="1"
+                                max="100"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label> Class </label>
+                            <input
+                                type="text"
+                                name="class_name"
+                                value="{{ student[3] }}"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label> City </label>
+                            <input
+                                type="text"
+                                name="city"
+                                value="{{ student[4] }}"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label> Phone Number </label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                value="{{ student[5] }}"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a href="/students" class="cancel-button"> Cancel </a>
+                        <button type="submit">Update Student</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </body>
+</html>

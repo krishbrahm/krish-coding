@@ -32,14 +32,14 @@
                     <div class="stat-icon">👨‍🎓</div>
                     <div>
                         <p>Total students</p>
-                        <h2>0</h2>
+                        <h2>{{ total_students }}</h2>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">📚</div>
                     <div>
                         <p>Classes</p>
-                        <h2>0</h2>
+                        <h2>{{ total_classes }}</h2>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -64,6 +64,83 @@
                         <p>View & manage all students</p>
                     </a>
                 </div>
+            </section>
+            <section class="dashboard-section recent-section">
+                <div class="recent-header">
+                    <div>
+                        <h2>Recent Students</h2>
+                        <p>
+                            Here are the latest students added to your database.
+                        </p>
+                    </div>
+
+                    <a href="/students" class="view-all-btn">
+                        View all students →
+                    </a>
+                </div>
+
+                {% if recent_students %}
+
+                <div class="recent-table-wrapper">
+                    <table class="recent-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Age</th>
+                                <th>Class</th>
+                                <th>City</th>
+                                <th>Phone</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for student in recent_students %}
+
+                            <tr>
+                                <td>
+                                    <div class="student-info">
+                                        <div class="student-avatar">
+                                            {{ student[1][0]|upper }}
+                                        </div>
+
+                                        <span>{{ student[1] }}</span>
+                                    </div>
+                                </td>
+
+                                <td>{{ student[2] }}</td>
+
+                                <td>
+                                    <span class="class-badge">
+                                        {{ student[3] }}
+                                    </span>
+                                </td>
+
+                                <td>{{ student[4] }}</td>
+
+                                <td>{{ student[5] }}</td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+
+                <div class="empty-students">
+                    <div class="empty-icon">👨‍🎓</div>
+                    <h3>No students yet</h3>
+                    <p>
+                        Start building your student database by adding your
+                        first student.
+                    </p>
+
+                    <a href="/add-student" class="view-all-btn">
+                        + Add Student
+                    </a>
+                </div>
+
+                {% endif %}
             </section>
         </main>
     </body>
