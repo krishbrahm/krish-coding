@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { QuestionContext, SwitchContext, SettingsContext } from './Contexts.ts'
 import { Question } from './index.ts'
 import Qcard from './Qcard.tsx'
