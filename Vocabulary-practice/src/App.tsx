@@ -4,7 +4,7 @@ function App() {
     return (
         <>
             <header className="page-header">
-                <h2>Vocabulary Quiz</h2>
+                <h1>Vocabulary Quiz</h1>
             </header>
 
             <Main />

@@ -191,8 +191,9 @@ export default function Main() {
                 </button>
 
                 <footer className='card-footer'>
-                    <p>Difficulty: {difficulty}</p>
-                    {mode === "practice" && <p>Example: {example}</p>}
+                    <p>Difficulty: {difficulty} <br/>
+                        {mode === "practice" && <>Example: {example}</>}
+                    </p>
                 </footer>
             </form>
         </div>

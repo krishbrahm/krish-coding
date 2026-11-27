@@ -237,7 +237,7 @@ p.card-footer {
 }
 
 .card-footer {
-  margin-top: 22px;
+  min-height: 80px;
 }
 
 .difficulty-label {
