@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { QuestionContext, SwitchContext, SettingsContext } from './Contexts.ts'
+import { QuestionContext, SettingsContext } from './Contexts.ts'
 import { Question } from './index.ts'
 import Qcard from './Qcard.tsx'
 import getDbData from "./route.ts";
